@@ -1,5 +1,5 @@
 Name:           nvidia-persistenced
-Version:        364.12
+Version:        364.15
 Release:        1%{?dist}
 Summary:        A daemon to maintain persistent software state in the NVIDIA driver
 Epoch:          2
@@ -116,6 +116,9 @@ fi
 %attr(750,%{name},%{name}) %{_sharedstatedir}/%{name}
 
 %changelog
+* Fri Apr 08 2016 Simone Caronni <negativo17@gmail.com> - 2:364.15-1
+- Update to 364.15.
+
 * Tue Mar 22 2016 Simone Caronni <negativo17@gmail.com> - 2:364.12-1
 - Update to 364.12.
 - Update make parameters.
