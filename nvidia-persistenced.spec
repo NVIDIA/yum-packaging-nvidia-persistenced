@@ -1,5 +1,5 @@
 Name:           nvidia-persistenced
-Version:        361.45.11
+Version:        367.27
 Release:        1%{?dist}
 Summary:        A daemon to maintain persistent software state in the NVIDIA driver
 Epoch:          2
@@ -39,12 +39,14 @@ startup time of new clients in this scenario.
 
 %prep
 %setup -q
+# Remove additional CFLAGS added when enabling DEBUG
+sed -i '/+= -O0 -g/d' utils.mk
 
 %build
-export CFLAGS=${RPM_OPT_FLAGS}
 make %{?_smp_mflags} \
+    DEBUG=1 \
     NV_VERBOSE=1 \
-    STRIP_CMD="true"
+    PREFIX=%{_prefix}
 
 %install
 %make_install INSTALL="install -p" PREFIX=%{_prefix}
@@ -114,6 +116,10 @@ fi
 %attr(750,%{name},%{name}) %{_sharedstatedir}/%{name}
 
 %changelog
+* Mon Jun 13 2016 Simone Caronni <negativo17@gmail.com> - 2:367.27-1
+- Update to 367.27.
+- Update make parameters.
+
 * Fri May 27 2016 Simone Caronni <negativo17@gmail.com> - 2:361.45.11-1
 - Update to 361.45.11.
 
