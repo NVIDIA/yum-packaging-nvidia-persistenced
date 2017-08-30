@@ -111,7 +111,6 @@ fi
 %endif
 
 %files
-%{!?_licensedir:%global license %%doc}
 %license COPYING
 %{_mandir}/man1/%{name}.1.*
 %{_sbindir}/%{name}
