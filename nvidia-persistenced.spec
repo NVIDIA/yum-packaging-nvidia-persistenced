@@ -43,13 +43,20 @@ startup time of new clients in this scenario.
 sed -i '/+= -O0 -g/d' utils.mk
 
 %build
+export CFLAGS="%{optflags}"
+export LDFLAGS="%{?__global_ldflags}"
 make %{?_smp_mflags} \
     DEBUG=1 \
     NV_VERBOSE=1 \
-    PREFIX=%{_prefix}
+    PREFIX=%{_prefix} \
+    STRIP_CMD=true
 
 %install
-%make_install INSTALL="install -p" PREFIX=%{_prefix}
+%make_install \
+    NV_VERBOSE=1 \
+    PREFIX=%{_prefix} \
+    STRIP_CMD=true
+
 mv %{buildroot}%{_bindir} %{buildroot}%{_sbindir}
 mkdir -p %{buildroot}%{_sharedstatedir}/%{name}
 
@@ -118,6 +125,7 @@ fi
 %changelog
 * Wed Aug 30 2017 Simone Caronni <negativo17@gmail.com> - 2:384.69-1
 - Update to 384.69.
+- Update SPEC file to get the proper flags on Fedora 27.
 
 * Tue Jul 25 2017 Simone Caronni <negativo17@gmail.com> - 2:384.59-1
 - Update to 384.59.
