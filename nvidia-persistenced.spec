@@ -71,7 +71,11 @@ exit 0
 %systemd_postun_with_restart %{name}.service
 
 %files
+%if 0%{?rhel} == 6
+%doc COPYING
+%else
 %license COPYING
+%endif
 %{_mandir}/man1/%{name}.1.*
 %{_sbindir}/%{name}
 %{_unitdir}/%{name}.service
