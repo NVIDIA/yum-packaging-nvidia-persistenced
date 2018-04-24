@@ -1,6 +1,6 @@
 Name:           nvidia-persistenced
 Version:        390.48
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A daemon to maintain persistent software state in the NVIDIA driver
 Epoch:          3
 License:        GPLv2+
@@ -11,7 +11,8 @@ Source0:        https://download.nvidia.com/XFree86/%{name}/%{name}-%{version}.t
 Source1:        %{name}.service
 Source2:        %{name}.init
 
-BuildRequires:      m4
+BuildRequires:  libtirpc-devel
+BuildRequires:  m4
 
 %if 0%{?fedora} || 0%{?rhel} >= 7
 BuildRequires:      systemd
@@ -43,8 +44,8 @@ startup time of new clients in this scenario.
 sed -i '/+= -O0 -g/d' utils.mk
 
 %build
-export CFLAGS="%{optflags}"
-export LDFLAGS="%{?__global_ldflags}"
+export CFLAGS="%{optflags} -I%{_includedir}/tirpc"
+export LDFLAGS="%{?__global_ldflags} -ltirpc"
 make %{?_smp_mflags} \
     DEBUG=1 \
     NV_VERBOSE=1 \
@@ -122,6 +123,10 @@ fi
 %attr(750,%{name},%{name}) %{_sharedstatedir}/%{name}
 
 %changelog
+* Tue Apr 24 2018 Simone Caronni <negativo17@gmail.com> - 3:390.48-2
+- Switch to libtirpc for RPC interfaces:
+  https://fedoraproject.org/wiki/Changes/SunRPCRemoval
+
 * Tue Apr 03 2018 Simone Caronni <negativo17@gmail.com> - 3:390.48-1
 - Update to 390.48.
 
