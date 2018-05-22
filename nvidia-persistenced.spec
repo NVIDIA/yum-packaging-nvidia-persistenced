@@ -1,6 +1,6 @@
 Name:           nvidia-persistenced
-Version:        390.48
-Release:        2%{?dist}
+Version:        390.59
+Release:        1%{?dist}
 Summary:        A daemon to maintain persistent software state in the NVIDIA driver
 Epoch:          3
 License:        GPLv2+
@@ -123,6 +123,9 @@ fi
 %attr(750,%{name},%{name}) %{_sharedstatedir}/%{name}
 
 %changelog
+* Tue May 22 2018 Simone Caronni <negativo17@gmail.com> - 3:390.59-1
+- Update to 390.59.
+
 * Tue Apr 24 2018 Simone Caronni <negativo17@gmail.com> - 3:390.48-2
 - Switch to libtirpc for RPC interfaces:
   https://fedoraproject.org/wiki/Changes/SunRPCRemoval
