@@ -6,6 +6,7 @@ After=syslog.target
 Type=forking
 ExecStart=/usr/sbin/nvidia-persistenced --user nvidia-persistenced
 ExecStopPost=/bin/rm -rf /var/run/nvidia-persistenced/*
+TimeoutSec=300
 
 [Install]
 WantedBy=multi-user.target
