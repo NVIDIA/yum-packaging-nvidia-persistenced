@@ -4,7 +4,7 @@ After=syslog.target
 
 [Service]
 Type=forking
-ExecStart=/usr/sbin/nvidia-persistenced --user nvidia-persistenced
+ExecStart=/usr/sbin/nvidia-persistenced --user root
 ExecStopPost=/bin/rm -rf /var/run/nvidia-persistenced/*
 TimeoutSec=300
 
