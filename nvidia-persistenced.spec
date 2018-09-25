@@ -11,6 +11,7 @@ Source0:        https://download.nvidia.com/XFree86/%{name}/%{name}-%{version}.t
 Source1:        %{name}.service
 Source2:        %{name}.init
 
+BuildRequires:  gcc
 BuildRequires:  libtirpc-devel
 BuildRequires:  m4
 
