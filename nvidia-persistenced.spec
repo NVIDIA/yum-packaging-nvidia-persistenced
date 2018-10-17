@@ -1,5 +1,5 @@
 Name:           nvidia-persistenced
-Version:        390.87
+Version:        410.66
 Release:        1%{?dist}
 Summary:        A daemon to maintain persistent software state in the NVIDIA driver
 Epoch:          3
@@ -11,6 +11,7 @@ Source0:        https://download.nvidia.com/XFree86/%{name}/%{name}-%{version}.t
 Source1:        %{name}.service
 Source2:        %{name}.init
 
+BuildRequires:  gcc
 BuildRequires:  libtirpc-devel
 BuildRequires:  m4
 
@@ -123,6 +124,9 @@ fi
 %attr(750,%{name},%{name}) %{_sharedstatedir}/%{name}
 
 %changelog
+* Wed Oct 17 2018 Simone Caronni <negativo17@gmail.com> - 3:410.66-1
+- Update to 410.66.
+
 * Thu Sep 06 2018 Simone Caronni <negativo17@gmail.com> - 3:390.87-1
 - Update to 390.87.
 
