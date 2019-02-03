@@ -1,6 +1,6 @@
 Name:           nvidia-persistenced
 Version:        410.93
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A daemon to maintain persistent software state in the NVIDIA driver
 Epoch:          3
 License:        GPLv2+
@@ -30,7 +30,6 @@ Requires(postun):   /sbin/service
 %endif
 
 Requires(pre):      shadow-utils
-Requires:           nvidia-kmod-common = %{?epoch}:%{version}
 Requires:           nvidia-driver-cuda = %{?epoch}:%{version}
 
 %description
@@ -124,6 +123,9 @@ fi
 %attr(750,%{name},%{name}) %{_sharedstatedir}/%{name}
 
 %changelog
+* Sun Feb 03 2019 Simone Caronni <negativo17@gmail.com> - 3:410.93-2
+- Do not require nvidia-kmod-common, already required by nvidia-driver-cuda.
+
 * Fri Jan 04 2019 Simone Caronni <negativo17@gmail.com> - 3:410.93-1
 - Update to 410.93.
 
