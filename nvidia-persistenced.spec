@@ -1,6 +1,6 @@
 Name:           nvidia-persistenced
-Version:        415.27
-Release:        2%{?dist}
+Version:        418.30
+Release:        1%{?dist}
 Summary:        A daemon to maintain persistent software state in the NVIDIA driver
 Epoch:          3
 License:        GPLv2+
@@ -123,6 +123,9 @@ fi
 %attr(750,%{name},%{name}) %{_sharedstatedir}/%{name}
 
 %changelog
+* Wed Feb 06 2019 Simone Caronni <negativo17@gmail.com> - 3:418.30-1
+- Update to 418.30.
+
 * Sun Feb 03 2019 Simone Caronni <negativo17@gmail.com> - 3:415.27-2
 - Do not require nvidia-kmod-common, already required by nvidia-driver-cuda.
 
