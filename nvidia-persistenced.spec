@@ -41,13 +41,13 @@ startup time of new clients in this scenario.
 %prep
 %setup -q
 # Remove additional CFLAGS added when enabling DEBUG
-sed -i '/+= -O0 -g/d' utils.mk
+sed -i -e '/+= -O0 -g/d' utils.mk
 
 %build
 export CFLAGS="%{optflags} -I%{_includedir}/tirpc"
-export LDFLAGS="%{?__global_ldflags} -ltirpc"
 make %{?_smp_mflags} \
     DEBUG=1 \
+    LIBS="-ldl -ltirpc" \
     NV_VERBOSE=1 \
     PREFIX=%{_prefix} \
     STRIP_CMD=true
