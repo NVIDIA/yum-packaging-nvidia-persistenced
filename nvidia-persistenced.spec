@@ -1,4 +1,8 @@
-Name:           nvidia-persistenced
+%global _basename nvidia-persistenced
+
+%define _named_version %{driver_branch}
+
+Name:           %{_basename}-%{_named_version}
 Version:        410.73
 Release:        1%{?dist}
 Summary:        A daemon to maintain persistent software state in the NVIDIA driver
@@ -7,9 +11,9 @@ License:        GPLv2+
 URL:            http://www.nvidia.com/object/unix.html
 ExclusiveArch:  %{ix86} x86_64 ppc64le
 
-Source0:        https://download.nvidia.com/XFree86/%{name}/%{name}-%{version}.tar.bz2
-Source1:        %{name}.service
-Source2:        %{name}.init
+Source0:        https://download.nvidia.com/XFree86/%{_basename}/%{_basename}-%{version}.tar.bz2
+Source1:        %{_basename}.service
+Source2:        %{_basename}.init
 
 BuildRequires:  gcc
 BuildRequires:  libtirpc-devel
@@ -30,8 +34,11 @@ Requires(postun):   /sbin/service
 %endif
 
 Requires(pre):      shadow-utils
-Requires:           nvidia-kmod-common = %{?epoch}:%{version}
-Requires:           nvidia-driver-cuda = %{?epoch}:%{version}
+Requires:           nvidia-driver-%{_named_version}-cuda = %{?epoch}:%{version}
+
+Provides:           %{_basename} = %{?epoch}:%{version}-%{release}
+Obsoletes:          %{_basename} < %{?epoch}:%{version}-%{release}
+
 
 %description
 The %{name} utility is used to enable persistent software state in the NVIDIA
@@ -59,54 +66,54 @@ make %{?_smp_mflags} \
     PREFIX=%{_prefix} \
     STRIP_CMD=true
 
-mkdir -p %{buildroot}%{_sharedstatedir}/%{name}
+mkdir -p %{buildroot}%{_sharedstatedir}/%{_basename}
 
 %if 0%{?fedora} || 0%{?rhel} >= 7
 
 # Systemd unit files
-install -p -m 644 -D %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
+install -p -m 644 -D %{SOURCE1} %{buildroot}%{_unitdir}/%{_basename}.service
 
 %else
 
 # Initscripts
-install -p -m 755 -D %{SOURCE2} %{buildroot}%{_initrddir}/%{name}
+install -p -m 755 -D %{SOURCE2} %{buildroot}%{_initrddir}/%{_basename}
 
 %endif
 
 %pre
-getent group %{name} >/dev/null || groupadd -r %{name}
-getent passwd %{name} >/dev/null || \
-    useradd -r -g %{name} -d /var/run/%{name} -s /sbin/nologin \
-    -c "NVIDIA persistent software state" %{name}
+getent group %{_basename} >/dev/null || groupadd -r %{_basename}
+getent passwd %{_basename} >/dev/null || \
+    useradd -r -g %{_basename} -d /var/run/%{_basename} -s /sbin/nologin \
+    -c "NVIDIA persistent software state" %{_basename}
 exit 0
 
 %if 0%{?fedora} || 0%{?rhel} >= 7
 
 %post
-%systemd_post %{name}.service
+%systemd_post %{_basename}.service
 
 %preun
-%systemd_preun %{name}.service
+%systemd_preun %{_basename}.service
 
 %postun
-%systemd_postun_with_restart %{name}.service
+%systemd_postun_with_restart %{_basename}.service
 
 %endif
 
 %if 0%{?rhel} == 6
 
 %post
-/sbin/chkconfig --add %{name}
+/sbin/chkconfig --add %{_basename}
 
 %preun
 if [ $1 -eq 0 ]; then
-    /sbin/service %{name} stop >/dev/null 2>&1 || :
-    /sbin/chkconfig --del %{name}
+    /sbin/service %{_basename} stop >/dev/null 2>&1 || :
+    /sbin/chkconfig --del %{_basename}
 fi
 
 %postun
 if [ $1 -ge 1 ]; then
-    /sbin/service %{name} condrestart >/dev/null 2>&1 || :
+    /sbin/service %{_basename} condrestart >/dev/null 2>&1 || :
 fi
 
 %endif
@@ -117,14 +124,14 @@ fi
 %else
 %license COPYING
 %endif
-%{_mandir}/man1/%{name}.1.*
-%{_bindir}/%{name}
+%{_mandir}/man1/%{_basename}.1.*
+%{_bindir}/%{_basename}
 %if 0%{?fedora} || 0%{?rhel} >= 7
-%{_unitdir}/%{name}.service
+%{_unitdir}/%{_basename}.service
 %else
-%{_initrddir}/%{name}
+%{_initrddir}/%{_basename}
 %endif
-%attr(750,%{name},%{name}) %{_sharedstatedir}/%{name}
+%attr(750,%{_basename},%{_basename}) %{_sharedstatedir}/%{_basename}
 
 %changelog
 * Fri Oct 26 2018 Simone Caronni <negativo17@gmail.com> - 3:410.73-1
