@@ -37,7 +37,7 @@ Requires(pre):      shadow-utils
 Requires:           nvidia-driver-%{_named_version}-cuda = %{?epoch}:%{version}
 
 Provides:           %{_basename} = %{?epoch}:%{version}-%{release}
-Obsoletes:          %{_basename} < %{?epoch}:%{version}-%{release}
+#Obsoletes:          %{_basename} < %{?epoch}:%{version}-%{release}
 
 
 %description
