@@ -37,8 +37,10 @@ Requires(pre):      shadow-utils
 Requires:           nvidia-driver-%{_named_version}-cuda = %{?epoch}:%{version}
 
 Provides:           %{_basename} = %{?epoch}:%{version}-%{release}
-#Obsoletes:          %{_basename} < %{?epoch}:%{version}-%{release}
 
+%if 0%{?is_dkms} == 1
+Obsoletes:          %{_basename} < %{?epoch}:%{version}-%{release}
+%endif
 
 %description
 The %{name} utility is used to enable persistent software state in the NVIDIA
