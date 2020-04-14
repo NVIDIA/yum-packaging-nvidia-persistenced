@@ -1,6 +1,6 @@
 Name:           nvidia-persistenced
 Version:        440.82
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A daemon to maintain persistent software state in the NVIDIA driver
 Epoch:          3
 License:        GPLv2+
@@ -16,17 +16,18 @@ BuildRequires:  libtirpc-devel
 BuildRequires:  m4
 
 %if 0%{?fedora} || 0%{?rhel} >= 7
-BuildRequires:      systemd
+# For Fedora systemd-rpm-macros would be enough:
+BuildRequires:      systemd-devel
 Requires(post):     systemd
 Requires(preun):    systemd
 Requires(postun):   systemd
 %endif
 
 %if 0%{?rhel} == 6
-Requires(post):     /sbin/chkconfig
-Requires(preun):    /sbin/chkconfig
-Requires(preun):    /sbin/service
-Requires(postun):   /sbin/service
+Requires(post):     chkconfig
+Requires(preun):    chkconfig
+Requires(preun):    initscripts
+Requires(postun):   initscripts
 %endif
 
 Requires(pre):      shadow-utils
@@ -123,6 +124,9 @@ fi
 %attr(750,%{name},%{name}) %{_sharedstatedir}/%{name}
 
 %changelog
+* Tue Apr 14 2020 Simone Caronni <negativo17@gmail.com> - 3:440.82-2
+- Update requirements according to package guidelines.
+
 * Thu Apr 09 2020 Simone Caronni <negativo17@gmail.com> - 3:440.82-1
 - Update to 440.82.
 
