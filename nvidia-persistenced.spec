@@ -1,6 +1,6 @@
 Name:           nvidia-persistenced
 Version:        450.80.02
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        A daemon to maintain persistent software state in the NVIDIA driver
 Epoch:          3
 License:        GPLv2+
@@ -9,27 +9,16 @@ ExclusiveArch:  %{ix86} x86_64
 
 Source0:        https://download.nvidia.com/XFree86/%{name}/%{name}-%{version}.tar.bz2
 Source1:        %{name}.service
-Source2:        %{name}.init
 
 BuildRequires:  gcc
 BuildRequires:  libtirpc-devel
 BuildRequires:  m4
 
-%if 0%{?fedora} || 0%{?rhel} >= 7
 # For Fedora systemd-rpm-macros would be enough:
 BuildRequires:      systemd-devel
 Requires(post):     systemd
 Requires(preun):    systemd
 Requires(postun):   systemd
-%endif
-
-%if 0%{?rhel} == 6
-Requires(post):     chkconfig
-Requires(preun):    chkconfig
-Requires(preun):    initscripts
-Requires(postun):   initscripts
-%endif
-
 Requires(pre):      shadow-utils
 Requires:           nvidia-driver-cuda = %{?epoch}:%{version}
 
@@ -62,17 +51,8 @@ make %{?_smp_mflags} \
 mv %{buildroot}%{_bindir} %{buildroot}%{_sbindir}
 mkdir -p %{buildroot}%{_sharedstatedir}/%{name}
 
-%if 0%{?fedora} || 0%{?rhel} >= 7
-
 # Systemd unit files
 install -p -m 644 -D %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
-
-%else
-
-# Initscripts
-install -p -m 755 -D %{SOURCE2} %{buildroot}%{_initrddir}/%{name}
-
-%endif
 
 %pre
 getent group %{name} >/dev/null || groupadd -r %{name}
@@ -80,8 +60,6 @@ getent passwd %{name} >/dev/null || \
     useradd -r -g %{name} -d /var/run/%{name} -s /sbin/nologin \
     -c "NVIDIA persistent software state" %{name}
 exit 0
-
-%if 0%{?fedora} || 0%{?rhel} >= 7
 
 %post
 %systemd_post %{name}.service
@@ -92,38 +70,17 @@ exit 0
 %postun
 %systemd_postun_with_restart %{name}.service
 
-%endif
-
-%if 0%{?rhel} == 6
-
-%post
-/sbin/chkconfig --add %{name}
-
-%preun
-if [ $1 -eq 0 ]; then
-    /sbin/service %{name} stop >/dev/null 2>&1 || :
-    /sbin/chkconfig --del %{name}
-fi
-
-%postun
-if [ $1 -ge 1 ]; then
-    /sbin/service %{name} condrestart >/dev/null 2>&1 || :
-fi
-
-%endif
-
 %files
 %license COPYING
 %{_mandir}/man1/%{name}.1.*
 %{_sbindir}/%{name}
-%if 0%{?fedora} || 0%{?rhel} >= 7
 %{_unitdir}/%{name}.service
-%else
-%{_initrddir}/%{name}
-%endif
 %attr(750,%{name},%{name}) %{_sharedstatedir}/%{name}
 
 %changelog
+* Mon Dec 07 2020 Simone Caronni <negativo17@gmail.com> - 3:455.80.02-2
+- Remove RHEL/CentOS 6 support.
+
 * Tue Oct 06 2020 Simone Caronni <negativo17@gmail.com> - 3:450.80.02-1
 - Update to 450.80.02.
 
