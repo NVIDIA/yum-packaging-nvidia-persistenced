@@ -1,5 +1,5 @@
 Name:           nvidia-persistenced
-Version:        430.14
+Version:        %{?version}%{?!version:430.14}
 Release:        1%{?dist}
 Summary:        A daemon to maintain persistent software state in the NVIDIA driver
 Epoch:          3
@@ -39,7 +39,7 @@ releasing device state when the device is not in use. This can improve the
 startup time of new clients in this scenario.
 
 %prep
-%setup -q
+%setup -q -m nvidia-persistenced-%{version}
 # Remove additional CFLAGS added when enabling DEBUG
 sed -i -e '/+= -O0 -g/d' utils.mk
 
@@ -127,6 +127,10 @@ fi
 %attr(750,%{name},%{name}) %{_sharedstatedir}/%{name}
 
 %changelog
+* Fri Apr 09 2021 Kevin Mittman <kmittman@nvidia.com> - 3:460.00-1
+- Add extension variable for gz or bz2 input tarball file
+- Populate version using variable
+
 * Sat May 18 2019 Simone Caronni <negativo17@gmail.com> - 3:430.14-1
 - Update to 430.14.
 
