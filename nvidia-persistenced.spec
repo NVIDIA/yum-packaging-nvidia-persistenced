@@ -39,7 +39,7 @@ releasing device state when the device is not in use. This can improve the
 startup time of new clients in this scenario.
 
 %prep
-%setup -q -m nvidia-persistenced-%{version}
+%setup -q -n nvidia-persistenced-%{version}
 # Remove additional CFLAGS added when enabling DEBUG
 sed -i -e '/+= -O0 -g/d' utils.mk
 
