@@ -1,3 +1,5 @@
+%define _tar_end %{?extension}%{?!extension:bz2}
+
 Name:           nvidia-persistenced
 Version:        %{?version}%{?!version:430.14}
 Release:        1%{?dist}
@@ -7,7 +9,7 @@ License:        GPLv2+
 URL:            http://www.nvidia.com/object/unix.html
 ExclusiveArch:  %{ix86} x86_64 ppc64le aarch64
 
-Source0:        https://download.nvidia.com/XFree86/%{name}/%{name}-%{version}.tar.bz2
+Source0:        https://download.nvidia.com/XFree86/%{name}/%{name}-%{version}.tar.%{_tar_end}
 Source1:        %{name}.service
 Source2:        %{name}.init
 
