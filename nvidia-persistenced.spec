@@ -1,7 +1,5 @@
-%define _tar_end %{?extension}%{?!extension:bz2}
-
 Name:           nvidia-persistenced
-Version:        %{?version}%{?!version:430.14}
+Version:        430.14
 Release:        1%{?dist}
 Summary:        A daemon to maintain persistent software state in the NVIDIA driver
 Epoch:          3
@@ -9,7 +7,7 @@ License:        GPLv2+
 URL:            http://www.nvidia.com/object/unix.html
 ExclusiveArch:  %{ix86} x86_64 ppc64le aarch64
 
-Source0:        https://download.nvidia.com/XFree86/%{name}/%{name}-%{version}.tar.%{_tar_end}
+Source0:        https://download.nvidia.com/XFree86/%{name}/%{name}-%{version}.tar.bz2
 Source1:        %{name}.service
 Source2:        %{name}.init
 
@@ -41,7 +39,7 @@ releasing device state when the device is not in use. This can improve the
 startup time of new clients in this scenario.
 
 %prep
-%setup -q -n nvidia-persistenced-%{version}
+%setup -q
 # Remove additional CFLAGS added when enabling DEBUG
 sed -i -e '/+= -O0 -g/d' utils.mk
 
@@ -129,10 +127,6 @@ fi
 %attr(750,%{name},%{name}) %{_sharedstatedir}/%{name}
 
 %changelog
-* Fri Apr 09 2021 Kevin Mittman <kmittman@nvidia.com> - 3:460.00-1
-- Add extension variable for gz or bz2 input tarball file
-- Populate version using variable
-
 * Sat May 18 2019 Simone Caronni <negativo17@gmail.com> - 3:430.14-1
 - Update to 430.14.
 
