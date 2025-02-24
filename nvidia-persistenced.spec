@@ -1,15 +1,13 @@
-%define _tar_end %{?extension}%{?!extension:bz2}
-
 Name:           nvidia-persistenced
-Version:        %{?version}%{?!version:550.54.14}
+Version:        570.00
 Release:        1%{?dist}
 Summary:        A daemon to maintain persistent software state in the NVIDIA driver
 Epoch:          3
 License:        GPLv2+
 URL:            http://www.nvidia.com/object/unix.html
-ExclusiveArch:  %{ix86} x86_64 aarch64
+ExclusiveArch:  x86_64 aarch64
 
-Source0:        https://download.nvidia.com/XFree86/%{name}/%{name}-%{version}.tar.%{_tar_end}
+Source0:        https://download.nvidia.com/XFree86/%{name}/%{name}-%{version}.tar.bz2
 Source1:        %{name}.service
 
 BuildRequires:  gcc
@@ -68,3 +66,5 @@ install -p -m 644 -D %{SOURCE1} %{buildroot}%{_unitdir}/%{name}.service
 %{_mandir}/man1/%{name}.1.*
 %{_sharedstatedir}/%{name}
 %{_unitdir}/%{name}.service
+
+%changelog
